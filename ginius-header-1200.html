@@ -114,7 +114,7 @@
 
 
     // end submenu
-    
+
 
 </script>
 
@@ -137,85 +137,68 @@
     }
 </style>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const offCanvas = document.querySelector('.e-off-canvas');
-  const items = document.querySelectorAll('.offcanvas_menu > *');
-
-  if (!offCanvas || !items.length) return;
-
-  // Reset items (initial state)
-  const resetItems = () => {
-    items.forEach(el => {
-      el.style.transition = 'none';
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(20px)';
-    });
-  };
-
-  // Animate items line by line
-  const animateItems = () => {
-    items.forEach((el, i) => {
-      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-      el.style.transitionDelay = `${i * 150}ms`; // stagger timing
-      el.style.opacity = '1';
-      el.style.transform = 'translateY(0)';
-    });
-  };
-
-  // Observe Elementor aria-hidden changes
-  const observer = new MutationObserver(() => {
-    const isOpen = offCanvas.getAttribute('aria-hidden') === 'false';
-    if (isOpen) {
-      animateItems();
-    } else {
-      resetItems();
-    }
-  });
-
-  observer.observe(offCanvas, { attributes: true });
-  resetItems(); // ensure initial state
-});
-</script>
 
 <!-- Workable Code for line by line animation of offcanvas menu item -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-  const offCanvas = document.querySelector('.e-off-canvas'); // Elementor offcanvas wrapper
-  const menuItems = document.querySelectorAll('.offcanvas_menu li');
+    document.addEventListener('DOMContentLoaded', () => {
+        const offCanvas = document.querySelector('.e-off-canvas'); // Elementor offcanvas wrapper
+        const menuItems = document.querySelectorAll('.offcanvas_menu li');
+        const subMenuContent = document.querySelectorAll('.content_item li');
 
-  if (!offCanvas || menuItems.length === 0) return;
+        if (!offCanvas || menuItems.length === 0 || subMenuContent.length === 0) return;
 
-  // Reset items to initial state
-  const resetMenu = () => {
-    menuItems.forEach(item => {
-      item.style.transition = 'none';
-      item.style.opacity = '0';
-      item.style.transform = 'translateY(20px)';
+        // Reset items to initial state
+        const resetMenu = () => {
+            menuItems.forEach(item => {
+                item.style.transition = 'none';
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+            });
+        };
+
+        const resetContent = () => {
+            subMenuContent.forEach(item => {
+                item.style.transition = 'none';
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+            });
+        };
+
+
+
+        // Animate items line by line
+        const animateMenu = () => {
+            menuItems.forEach((item, index) => {
+                item.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
+                item.style.transitionDelay = `${index * 200}ms`; // 100ms between lines
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            });
+        };
+        const animateContent = () => {
+            subMenuContent.forEach((item, index) => {
+                item.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
+                item.style.transitionDelay = `${index * 200}ms`; // 100ms between lines 
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+            });
+        };
+
+
+        // Observe offcanvas open/close changes
+        const observer = new MutationObserver(() => {
+            const isOpen = offCanvas.getAttribute('aria-hidden') === 'false';
+            if (isOpen) {
+                animateMenu();
+                animateContent();
+            } else {
+                resetMenu();
+                resetContent();
+            }
+        });
+
+        observer.observe(offCanvas, { attributes: true });
+        resetMenu(); // ensure hidden initially
+        resetContent();
     });
-  };
-
-  // Animate items line by line
-  const animateMenu = () => {
-    menuItems.forEach((item, index) => {
-      item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-      item.style.transitionDelay = `${index * 100}ms`; // 100ms between lines
-      item.style.opacity = '1';
-      item.style.transform = 'translateY(0)';
-    });
-  };
-
-  // Observe offcanvas open/close changes
-  const observer = new MutationObserver(() => {
-    const isOpen = offCanvas.getAttribute('aria-hidden') === 'false';
-    if (isOpen) {
-      animateMenu();
-    } else {
-      resetMenu();
-    }
-  });
-
-  observer.observe(offCanvas, { attributes: true });
-  resetMenu(); // ensure hidden initially
-});
 </script>
