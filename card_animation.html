@@ -1,0 +1,47 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.to('.solution-card-1', {
+    scrollTrigger: {
+        trigger: '.wrapper-solutions-animation',
+        start: 'top top',
+        end: 'bottom center',
+        scrub: 1
+    },
+    x: 102,
+    y: -96,
+    scale: 0.954,
+    ease: 'none'
+});
+
+gsap.to('.solution-card-2', {
+    scrollTrigger: {
+        trigger: '.wrapper-solutions-animation',
+        start: 'top top',
+        end: 'bottom center',
+        scrub: 1
+    },
+    x: 81,
+    y: -161,
+    rotation: 3.12,
+    scale: 0.915,
+    ease: 'none'
+});
+
+gsap.to('.solution-card-3', {
+    scrollTrigger: {
+        trigger: '.wrapper-solutions-animation',
+        start: 'top top',
+        end: 'bottom center',
+        scrub: 1
+    },
+    x: -19,
+    y: -241,
+    rotation: 9.53,
+    scale: 0.858,
+    ease: 'none'
+});
+</script>
