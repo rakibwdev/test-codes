@@ -204,40 +204,38 @@
 
 
 
-// mobile bottom border
+    // mobile bottom border
 
-document.addEventListener('DOMContentLoaded', () => {
-  const button = document.querySelector('.button-group');
-  if (!button) return;
+    document.addEventListener('DOMContentLoaded', () => {
+        const button = document.querySelector('.button-group');
+        if (!button) return;
 
-  let lastScrollY = window.scrollY;
+        let lastScrollY = window.scrollY;
 
-  window.addEventListener('scroll', () => {
-    const currentScroll = window.scrollY;
-    const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollPercent = (currentScroll / pageHeight) * 100;
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.scrollY;
+            const pageHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = (currentScroll / pageHeight) * 100;
 
-    // Only work after 30% scroll
-    if (scrollPercent < 30) {
-      button.classList.remove('is-visible');
-      button.classList.add('is-hidden');
-      return;
-    }
+            // Only work after 30% scroll
+            if (scrollPercent < 30) {
+                button.classList.remove('is-visible');
+                button.classList.add('is-hidden');
+                return;
+            }
 
-    // Scroll DOWN → hide
-    if (currentScroll > lastScrollY) {
-      button.classList.remove('is-visible');
-      button.classList.add('is-hidden');
-    }
-    // Scroll UP → show
-    else {
-      button.classList.add('is-visible');
-      button.classList.remove('is-hidden');
-    }
+            if (currentScroll > lastScrollY) {
 
-    lastScrollY = currentScroll;
-  });
-});
+                button.classList.add('is-visible');
+                button.classList.remove('is-hidden');
+            }
+            else {
+                button.classList.remove('is-visible');
+                button.classList.add('is-hidden');
+            }
 
-
+            lastScrollY = currentScroll;
+        });
+    });
+    
 </script>
