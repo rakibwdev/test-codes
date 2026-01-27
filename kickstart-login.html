@@ -390,29 +390,33 @@
     /* ---------- SSO redirect ---------- */
     const initiateSSO = async (provider) => {
         try {
-            const res = await fetch(
-                `${BASE_URL}/auth/sso/${provider}/initiate/`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                }
-            );
+            const redirect_uri = window.location.origin + "/auth/callback";
 
-            if (!res.ok) {
-                throw new Error(`SSO failed: ${res.status}`);
-            }
+            const res = await fetch(`${BASE_URL}/auth/sso/${provider}/initiate/`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ redirect_uri }),
+                credentials: "include"
+            });
+
+            if (!res.ok) throw new Error(`SSO failed: ${res.status}`);
 
             const data = await res.json();
 
             if (data.authorization_url) {
-                window.location.href = data.authorization_url;
+                window.open(
+                    data.authorization_url,
+                    "SSOLogin",
+                    "width=500,height=600,top=100,left=100"
+                );
             }
         } catch (err) {
             console.error("SSO error:", err);
         }
     };
+
 
 
     /* ---------- button events ---------- */
