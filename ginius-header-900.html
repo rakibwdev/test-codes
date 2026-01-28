@@ -131,7 +131,25 @@
 
 <script>
     // 	nav menu hover
- 
+    document.addEventListener('DOMContentLoaded', () => {
+        const pagesMenu = document.getElementById('sm-17695865109328533-3');
+        const headContent = document.querySelector('.head-menue-content');
+
+        if (!pagesMenu || !headContent) return;
+
+        const hideAll = () => {
+            headContent.setAttribute('show_status', false);
+        };
+
+        pagesMenu.addEventListener('mouseenter', () => {
+            hideAll();
+            headContent.setAttribute('show_status', true);
+        });
+
+        headContent.addEventListener('mouseleave', () => {
+            hideAll();
+        });
+    });
 
 
 
