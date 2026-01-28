@@ -1,132 +1,95 @@
 <style>
-    selector [show_status="false"] {
-        display: none !important;
-    }
+   selector [show_status="false"]{
+    display: none !important;
+}
 
-
-    .head-menue-content {
-        transform: translateY(10px);
-        animation: fadeDown 0.9s ease forwards;
-    }
-
-
-    @keyframes fadeDown {
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-
-    .sub-menu-content,
-    .sub-menu-content2,
-    .sub-menu-content3,
-    .content_item {
-        transform: translateY(10px);
-        animation: fadeUp 0.9s ease forwards;
-    }
-
-
-    @keyframes fadeUp {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-
-    #offcanvasMenu .elementor-icon-list-item {
-        flex-direction: row-reverse;
-        justify-content: space-between;
-        margin-right: 10px;
-    }
-
-    #off-canvas-64b8ce2.e-off-canvas[aria-hidden="false"] .e-off-canvas__content {
-        transform: scaleX(1);
-        transition: transform 0.45s ease-out;
-    }
-
-    #off-canvas-64b8ce2.e-off-canvas[aria-hidden="true"] .e-off-canvas__content {
-        transform: scaleX(0);
-        transition: transform 0.4s cubic-bezier(.4, 0, .2, 1);
-    }
+/* Hide default submenu for PAGES only */
+.menu-item-1750 {
+  display: none !important;
+}
 
 
 
-    .offcanvas_menu li,
-    .content_item li {
-        opacity: 0;
-        transform: translateY(20px);
-        list-style: none
-    }
-
-    .button-group {
-        opacity: 0;
-        transform: translateY(30px);
-        pointer-events: none;
-        transition: opacity 0.4s ease,
-            transform 0.4s ease;
-    }
-
-    .button-group.is-visible {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-    }
-
-    .button-group.is-hidden {
-        opacity: 0;
-        transform: translateY(30px);
-        pointer-events: none;
-    }
+.offcanvas_menu li {
+  opacity: 0.5;
+  transform: translateY(20px);
+  list-style: none
+}
 
 
-    /*button animation*/
+/*button animation*/
 
-    /* base button */
-    .rt-hover-btn {
-        position: relative;
-        overflow: hidden;
-        color: transparent !important;
-        /* hide original text */
-    }
+.rt-hover-btn {
+  position: relative;
+  overflow: hidden;
+}
 
-    /* animated text layers */
-    .rt-hover-btn::before,
-    .rt-hover-btn::after {
-        content: attr(aria-label);
+/* animated text layers */
+.rt-hover-btn::before,
+.rt-hover-btn::after {
+  content: attr(aria-label);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+  color: #000000;
+  font-weight: 500;
+}
+
+/* visible text */
+.rt-hover-btn::before {
+  transform: translate(-50%, -50%);
+}
+
+/* hidden text below */
+.rt-hover-btn::after {
+  transform: translate(-50%, 50%);
+}
+
+.rt-hover-btn:hover::before {
+  transform: translate(-50%, -150%);
+}
+
+.rt-hover-btn:hover::after {
+  transform: translate(-50%, -50%);
+}
+
+
+/*nav menu hover*/
+selector .menu-item-1308{
+    position: relative !important;
+    &::after{
+        content: "" !important;
+        height: 100px !important;
+        width: 100% !important;
         position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        white-space: nowrap;
-        transition: transform 0.45s cubic-bezier(.4, 0, .2, 1);
-        color: #fff;
+        z-index: 0;
+        pointer-events: none !important;
+        border: none !important;
     }
+    &:hover::after{
+        pointer-events: all !important;
+    }
+    > *{
+        z-index: 1;
+    }
+}
 
-    /* visible text */
-    .rt-hover-btn::before {
-        transform: translate(-50%, -50%);
-    }
+selector .head-menue-content{
+    opacity: 0 !important;
+    pointer-events: none !important;
+    z-index: 1000;
+    transition: 0.3s;
+    
+}
 
-    /* hidden text below */
-    .rt-hover-btn::after {
-        transform: translate(-50%, 50%);
-    }
-
-    /* hover effect */
-    .rt-hover-btn:hover::before {
-        transform: translate(-50%, -150%);
-    }
-
-    .rt-hover-btn:hover::after {
-        transform: translate(-50%, -50%);
-    }
+selector:has(.menu-item-1308:hover, .head-menue-content:hover) .head-menue-content{
+    opacity: 1 !important;
+    pointer-events: all !important;
+    top: 68px;
+}
 </style>
 
 <script>
