@@ -1,125 +1,142 @@
 <style>
-    selector [show_status="false"] {
+ selector [show_status="false"]{
+    display: none !important;
+}
+
+.scrolled {
+  background: #000 !important;
+  border-bottom: 1px solid #fcfcfcbd !important;
+}
+
+.nav-content-list {
+    height: 200px;
+}
+.nav-content-list li{
+ transition: transform 0.8s ease;
+
+}
+.nav-content-list li:hover{
+ transition: transform 0.8s ease;
+  transform: translateX(20px);
+}
+
+/* Hide default submenu for PAGES only */
+@media (min-width: 1025px) {
+    .menu-item-1750, .menu-item-2765, .menu-item-2766, .menu-item-2767 {
         display: none !important;
     }
+}
 
-    /* Hide default submenu for PAGES only */
-    @media (min-width: 1025px) {
-        .menu-item-1750 {
-            display: none !important;
-        }
-    }
+@media(max-width: 1024px) {
+.elementor-nav-menu ul {
+    position: static !important;
+    /*border-bottom: 1px solid #3f444b;*/
+}
+    .elementor-nav-menu a{
+    border-bottom: 1px solid #777777a6;
+     transition: transform 0.6s ease;
+}
+    .elementor-nav-menu a:hover{
+    /*border-bottom: 1px solid #777777a6;*/
+     transition: transform 0.6s ease;
+  transform: translateX(15px);
+}
 
-    @media(max-width: 1024px) {
-        .elementor-nav-menu ul {
-            position: static !important;
-            border-bottom: 1px solid #3f444b;
-        }
+.elementor-1187 .elementor-element .elementor-item {
+    display: flex;
+    justify-content: space-between;
+}
 
-        .elementor-nav-menu a {
-            border-bottom: 1px solid #777777a6;
-        }
+}
 
-        .elementor-1187 .elementor-element .elementor-item {
-            display: flex;
-            justify-content: space-between;
-        }
+.offcanvas_menu li {
+  opacity: 0;
+  /*list-style: none*/
+}
 
-    }
+/*hover animation*/
 
-    .scrolled {
-        background: #000 !important;
-        border-bottom: 1px solid #fcfcfcbd !important;
-    }
+.offcanvas_menu li a,
+.offcanvas_menu li .elementor-icon-list-text {
+    transition: transform 0.6s ease !important;
+}
+.offcanvas_menu li:hover a,
+.offcanvas_menu li:hover .elementor-icon-list-text {
+    transition: transform 0.6s ease !important;
+  transform: translateX(25px);
+}
 
-    .offcanvas_menu li {
-        opacity: 0;
-        /*transform: translateY(20px);*/
-        list-style: none
-    }
+/*button animation*/
 
-    /*hover animation*/
+.rt-hover-btn {
+  position: relative;
+  overflow: hidden;
+}
 
-    .offcanvas_menu li:hover a,
-    .offcanvas_menu li:hover .elementor-icon-list-text {
-        transition: transform 0.6s ease !important;
-        transform: translateX(25px);
-    }
+/* animated nav button */
+.rt-hover-btn::before,
+.rt-hover-btn::after {
+  content: attr(aria-label);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  transition: transform 0.45s cubic-bezier(.4,0,.2,1);
+  color: #000000;
+  font-weight: 500;
+}
 
-    /*button animation*/
+.rt-hover-btn::before {
+  transform: translate(-50%, -50%);
+}
 
-    .rt-hover-btn {
-        position: relative;
-        overflow: hidden;
-    }
+.rt-hover-btn::after {
+  transform: translate(-50%, 50%);
+}
 
-    /* animated nav button */
-    .rt-hover-btn::before,
-    .rt-hover-btn::after {
-        content: attr(aria-label);
+.rt-hover-btn:hover::before {
+  transform: translate(-50%, -150%);
+}
+
+.rt-hover-btn:hover::after {
+  transform: translate(-50%, -50%);
+}
+
+
+/*nav menu hover*/
+selector .menu-item-1308{
+    position: relative !important;
+    &::after{
+        content: "" !important;
+        height: 100px !important;
+        width: 100% !important;
         position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        white-space: nowrap;
-        transition: transform 0.45s cubic-bezier(.4, 0, .2, 1);
-        color: #000000;
-        font-weight: 500;
-    }
-
-    .rt-hover-btn::before {
-        transform: translate(-50%, -50%);
-    }
-
-    .rt-hover-btn::after {
-        transform: translate(-50%, 50%);
-    }
-
-    .rt-hover-btn:hover::before {
-        transform: translate(-50%, -150%);
-    }
-
-    .rt-hover-btn:hover::after {
-        transform: translate(-50%, -50%);
-    }
-
-
-    /*nav menu hover*/
-    selector .menu-item-1308 {
-        position: relative !important;
-
-        &::after {
-            content: "" !important;
-            height: 100px !important;
-            width: 100% !important;
-            position: absolute;
-            z-index: 0;
-            pointer-events: none !important;
-            border: none !important;
-        }
-
-        &:hover::after {
-            pointer-events: all !important;
-        }
-
-        >* {
-            z-index: 1;
-        }
-    }
-
-    selector .head-menue-content {
-        opacity: 0 !important;
+        z-index: 0;
         pointer-events: none !important;
-        z-index: 1000;
-        transition: 0.3s;
-
+        border: none !important;
     }
-
-    selector:has(.menu-item-1308:hover, .head-menue-content:hover) .head-menue-content {
-        opacity: 1 !important;
+    &:hover::after{
         pointer-events: all !important;
-        top: 68px;
     }
+    > *{
+        z-index: 1;
+    }
+}
+
+selector .head-menue-content{
+    opacity: 0 !important;
+    pointer-events: none !important;
+    z-index: 1000;
+    transition: 0.3s;
+    
+}
+
+selector:has(.menu-item-1308:hover, .head-menue-content:hover) .head-menue-content{
+    opacity: 1 !important;
+    pointer-events: all !important;
+    top: 90px;
+}
 </style>
 
 <script>
@@ -209,27 +226,3 @@
         });
     });
 </script>
-
-1 Inner pages
-About us
-Property listing one
-Property listing two
-Property listing three
-Property details
-Pricing
-Contact us
-
-2
-Agents
-Agent details
-Blog one
-Blog two
-Blog three
-Blog post
-
-3.Utility pages
-Password protected
-404
-License
-Changelog
-Style guide
