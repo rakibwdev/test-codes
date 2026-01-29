@@ -1,142 +1,154 @@
 <style>
- selector [show_status="false"]{
-    display: none !important;
-}
-
-.scrolled {
-  background: #000 !important;
-  border-bottom: 1px solid #fcfcfcbd !important;
-}
-
-.nav-content-list {
-    height: 200px;
-}
-.nav-content-list li{
- transition: transform 0.8s ease;
-
-}
-.nav-content-list li:hover{
- transition: transform 0.8s ease;
-  transform: translateX(20px);
-}
-
-/* Hide default submenu for PAGES only */
-@media (min-width: 1025px) {
-    .menu-item-1750, .menu-item-2765, .menu-item-2766, .menu-item-2767 {
+    selector [show_status="false"] {
         display: none !important;
     }
-}
 
-@media(max-width: 1024px) {
-.elementor-nav-menu ul {
-    position: static !important;
-    /*border-bottom: 1px solid #3f444b;*/
-}
-    .elementor-nav-menu a{
-    border-bottom: 1px solid #777777a6;
-     transition: transform 0.6s ease;
-}
-    .elementor-nav-menu a:hover{
-    /*border-bottom: 1px solid #777777a6;*/
-     transition: transform 0.6s ease;
-  transform: translateX(15px);
-}
+    .scrolled {
+        background: #000 !important;
+        border-bottom: 1px solid #fcfcfcbd !important;
+    }
 
-.elementor-1187 .elementor-element .elementor-item {
-    display: flex;
-    justify-content: space-between;
-}
+    .nav-content-list {
+        height: 200px;
+    }
 
-}
+    .nav-content-list li {
+        transition: transform 0.8s ease;
 
-.offcanvas_menu li {
-  opacity: 0;
-  /*list-style: none*/
-}
+    }
 
-/*hover animation*/
+    .nav-content-list li:hover {
+        transition: transform 0.8s ease;
+        transform: translateX(20px);
+    }
 
-.offcanvas_menu li a,
-.offcanvas_menu li .elementor-icon-list-text {
-    transition: transform 0.6s ease !important;
-}
-.offcanvas_menu li:hover a,
-.offcanvas_menu li:hover .elementor-icon-list-text {
-    transition: transform 0.6s ease !important;
-  transform: translateX(25px);
-}
+    /* Hide default submenu for PAGES only */
+    @media (min-width: 1025px) {
 
-/*button animation*/
+        .menu-item-1750,
+        .menu-item-2765,
+        .menu-item-2766,
+        .menu-item-2767 {
+            display: none !important;
+        }
+    }
 
-.rt-hover-btn {
-  position: relative;
-  overflow: hidden;
-}
+    @media(max-width: 1024px) {
+        .elementor-nav-menu ul {
+            position: static !important;
+            /*border-bottom: 1px solid #3f444b;*/
+        }
 
-/* animated nav button */
-.rt-hover-btn::before,
-.rt-hover-btn::after {
-  content: attr(aria-label);
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  white-space: nowrap;
-  transition: transform 0.45s cubic-bezier(.4,0,.2,1);
-  color: #000000;
-  font-weight: 500;
-}
+        .elementor-nav-menu a {
+            border-bottom: 1px solid #777777a6;
+            transition: transform 0.6s ease;
+        }
 
-.rt-hover-btn::before {
-  transform: translate(-50%, -50%);
-}
+        .elementor-nav-menu a:hover {
+            /*border-bottom: 1px solid #777777a6;*/
+            transition: transform 0.6s ease;
+            transform: translateX(15px);
+        }
 
-.rt-hover-btn::after {
-  transform: translate(-50%, 50%);
-}
+        .elementor-1187 .elementor-element .elementor-item {
+            display: flex;
+            justify-content: space-between;
+        }
 
-.rt-hover-btn:hover::before {
-  transform: translate(-50%, -150%);
-}
+    }
 
-.rt-hover-btn:hover::after {
-  transform: translate(-50%, -50%);
-}
+    .offcanvas_menu li {
+        opacity: 0;
+        /*list-style: none*/
+    }
 
+    /*hover animation*/
 
-/*nav menu hover*/
-selector .menu-item-1308{
-    position: relative !important;
-    &::after{
-        content: "" !important;
-        height: 100px !important;
-        width: 100% !important;
+    .offcanvas_menu li a,
+    .offcanvas_menu li .elementor-icon-list-text {
+        transition: transform 0.6s ease !important;
+    }
+
+    .offcanvas_menu li:hover a,
+    .offcanvas_menu li:hover .elementor-icon-list-text {
+        transition: transform 0.6s ease !important;
+        transform: translateX(25px);
+    }
+
+    /*button animation*/
+
+    .rt-hover-btn {
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* animated nav button */
+    .rt-hover-btn::before,
+    .rt-hover-btn::after {
+        content: attr(aria-label);
         position: absolute;
-        z-index: 0;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+        transition: transform 0.45s cubic-bezier(.4, 0, .2, 1);
+        color: #000000;
+        font-weight: 500;
+    }
+
+    .rt-hover-btn::before {
+        transform: translate(-50%, -50%);
+    }
+
+    .rt-hover-btn::after {
+        transform: translate(-50%, 50%);
+    }
+
+    .rt-hover-btn:hover::before {
+        transform: translate(-50%, -150%);
+    }
+
+    .rt-hover-btn:hover::after {
+        transform: translate(-50%, -50%);
+    }
+
+
+    /*nav menu hover*/
+    selector .menu-item-1308 {
+        position: relative !important;
+
+        &::after {
+            content: "" !important;
+            height: 100px !important;
+            width: 100% !important;
+            position: absolute;
+            z-index: 0;
+            pointer-events: none !important;
+            border: none !important;
+        }
+
+        &:hover::after {
+            pointer-events: all !important;
+        }
+
+        >* {
+            z-index: 1;
+        }
+    }
+
+    selector .head-menue-content {
+        opacity: 0 !important;
         pointer-events: none !important;
-        border: none !important;
+        z-index: 1000;
+        transition: 0.3s;
+
     }
-    &:hover::after{
+
+    selector:has(.menu-item-1308:hover, .head-menue-content:hover) .head-menue-content {
+        opacity: 1 !important;
         pointer-events: all !important;
+        top: 90px;
     }
-    > *{
-        z-index: 1;
-    }
-}
-
-selector .head-menue-content{
-    opacity: 0 !important;
-    pointer-events: none !important;
-    z-index: 1000;
-    transition: 0.3s;
-    
-}
-
-selector:has(.menu-item-1308:hover, .head-menue-content:hover) .head-menue-content{
-    opacity: 1 !important;
-    pointer-events: all !important;
-    top: 90px;
-}
 </style>
 
 <script>
@@ -167,46 +179,44 @@ selector:has(.menu-item-1308:hover, .head-menue-content:hover) .head-menue-conte
 
     // 	Offcanvas content animation
     document.addEventListener('DOMContentLoaded', () => {
-        const offCanvas = document.querySelector('.e-off-canvas'); // Elementor offcanvas wrapper
-        const menuItems = document.querySelectorAll('.offcanvas_menu li');
+        const offCanvases = document.querySelectorAll('.e-off-canvas'); // all offcanvas wrappers
+        const menuItems = document.querySelectorAll('.offcanvas_menu li'); // desktop menu items
+        const mobMenu = document.querySelectorAll('.e-off-canvas .elementor-nav-menu--main.elementor-nav-menu--layout-vertical a');
 
-        if (!offCanvas || menuItems.length === 0) return;
+        if (offCanvases.length === 0 || (menuItems.length === 0 && mobMenu.length === 0)) return;
 
-        // Reset items to initial state
+        const allItems = [...menuItems, ...mobMenu];
+
+        // Reset menu items
         const resetMenu = () => {
-            menuItems.forEach(item => {
-                item.style.transition = 'none';
+            allItems.forEach(item => {
                 item.style.opacity = '0';
                 item.style.transform = 'translateY(20px)';
             });
         };
 
-
-
-
-        // Animate items line by line
+        // Animate menu items
         const animateMenu = () => {
-            menuItems.forEach((item, index) => {
+            allItems.forEach((item, index) => {
                 item.style.transition = 'opacity 0.9s ease, transform 0.9s ease';
-                item.style.transitionDelay = `${index * 200}ms`; // 100ms between lines
+                item.style.transitionDelay = `${index * 200}ms`;
                 item.style.opacity = '1';
                 item.style.transform = 'translateY(0)';
             });
         };
 
+        // Add MutationObserver for EACH offcanvas
+        offCanvases.forEach(offCanvas => {
+            const observer = new MutationObserver(() => {
+                const isOpen = offCanvas.getAttribute('aria-hidden') === 'false';
+                if (isOpen) animateMenu();
+                else resetMenu();
+            });
 
-        // Observe offcanvas open/close changes
-        const observer = new MutationObserver(() => {
-            const isOpen = offCanvas.getAttribute('aria-hidden') === 'false';
-            if (isOpen) {
-                animateMenu();
-            } else {
-                resetMenu();
-            }
+            observer.observe(offCanvas, { attributes: true });
         });
 
-        observer.observe(offCanvas, { attributes: true });
-        resetMenu(); // ensure hidden initially
+        resetMenu(); // hide initially
     });
 
     // 	Offcanvas content animation end
