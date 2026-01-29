@@ -354,49 +354,46 @@
         }
     })
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // socaial login intigration
+    /* ---------- Config ---------- */
     const BASE_URL = "https://qa-ik-auth-service.interviewkickstart.com";
-    const LOGIN_EXPIRY_DAYS = 90;
+    const LOGIN_EXPIRY_DAYS = 90; // refresh token valid for 90 days
 
-    /* ---------- helpers ---------- */
-    const setLoginSession = () => {
+    /* ---------- Session helpers ---------- */
+    const setLoginSession = (user) => {
         const expiry = Date.now() + LOGIN_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
+
         localStorage.setItem("sso_logged_in", "true");
         localStorage.setItem("sso_expiry", expiry);
+
+        // store user info safely
+        localStorage.setItem("sso_name", user.name || "");
+        localStorage.setItem("sso_email", user.email || "");
     };
 
     const isSessionValid = () => {
-        const loggedIn = localStorage.getItem("sso_logged_in");
-        const expiry = localStorage.getItem("sso_expiry");
+        const loggedIn = localStorage.getItem("sso_logged_in") === "true";
+        const expiry = Number(localStorage.getItem("sso_expiry"));
         return loggedIn && expiry && Date.now() < expiry;
     };
 
     const clearSession = () => {
         localStorage.removeItem("sso_logged_in");
         localStorage.removeItem("sso_expiry");
+        localStorage.removeItem("sso_name");
+        localStorage.removeItem("sso_email");
     };
 
-    /* ---------- hide buttons if logged in ---------- */
-    const ssoButtons = document.getElementById("sso-buttons");
-
-    if (isSessionValid()) {
-        ssoButtons.style.display = "none";
-    } else {
-        clearSession(); // expired
-    }
-
-    /* ---------- SSO redirect ---------- */
+    /* ---------- Initiate SSO ---------- */
     const initiateSSO = async (provider) => {
         try {
             const redirect_uri = window.location.href;
 
             const res = await fetch(`${BASE_URL}/auth/sso/${provider}/initiate/`, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ redirect_uri }),
                 credentials: "include"
             });
@@ -406,42 +403,69 @@
             const data = await res.json();
 
             if (data.authorization_url) {
-                setLoginSession(); // mark session
+                // Redirect to SSO provider
                 window.location.href = data.authorization_url;
             }
+
         } catch (err) {
             console.error("SSO error:", err);
         }
     };
 
+    /* ---------- On page load ---------- */
+    document.addEventListener("DOMContentLoaded", () => {
 
+        // --- Parse URL hash after redirect from SSO ---
+        const hash = new URLSearchParams(window.location.hash.substring(1));
 
-    /* ---------- button events ---------- */
-    document.querySelector(".google_btn")?.addEventListener("click", () => {
-        initiateSSO("google");
+        const accessToken = hash.get("access_token");
+        const refreshToken = hash.get("refresh_token");
+
+        const name = hash.get("name") || "";
+        const email = hash.get("email") || "";
+
+        if (accessToken && refreshToken) {
+            // store tokens in cookies
+            document.cookie = `refresh_token=${refreshToken}; max-age=${60 * 60 * 24 * LOGIN_EXPIRY_DAYS}; path=/; secure; samesite=lax`;
+            document.cookie = `access_token=${accessToken}; max-age=900; path=/; secure; samesite=lax`;
+
+            // store session + user info
+            setLoginSession({ name, email });
+
+            // clean URL (remove hash)
+            window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+        }
+
+        // --- Auto-fill forms and hide SSO buttons ---
+        if (isSessionValid()) {
+            const storedName = localStorage.getItem("sso_name");
+            const storedEmail = localStorage.getItem("sso_email");
+
+            const nameInput = document.querySelector('input[name="name"]');
+            const emailInput = document.querySelector('input[name="email"]');
+
+            if (storedName && nameInput) {
+                nameInput.value = storedName;
+                nameInput.dispatchEvent(new Event("input", { bubbles: true }));
+            }
+
+            if (storedEmail && emailInput) {
+                emailInput.value = storedEmail;
+                emailInput.dispatchEvent(new Event("input", { bubbles: true }));
+            }
+
+            // hide SSO buttons
+            document.getElementById("sso-buttons")?.style.display = "none";
+        } else {
+            clearSession(); // session expired
+        }
+
     });
 
-    document.querySelector(".meta_btn")?.addEventListener("click", () => {
-        initiateSSO("meta");
-    });
+    /* ---------- SSO button click events ---------- */
+    document.querySelector(".google_btn")?.addEventListener("click", () => initiateSSO("google"));
+    document.querySelector(".meta_btn")?.addEventListener("click", () => initiateSSO("meta"));
+    document.querySelector(".linkedin_btn")?.addEventListener("click", () => initiateSSO("linkedin"));
 
-    document.querySelector(".linkedin_btn")?.addEventListener("click", () => {
-        initiateSSO("linkedin");
-    });
     //social login integration end
-</script>
-
-<!-- store tokens in cookies -->
-<script>
-    const hash = new URLSearchParams(window.location.hash.substring(1));
-
-const accessToken = hash.get("access_token");
-const refreshToken = hash.get("refresh_token");
-const expiresIn = hash.get("expires_in");
-
-document.cookie = `refresh_token=${refreshToken}; max-age=${60 * 60 * 24 * 90}; path=/; secure; samesite=lax`;
-document.cookie = `access_token=${accessToken}; max-age=900; path=/; secure; samesite=lax`;
-
-window.history.replaceState({}, document.title, window.location.pathname);
-
 </script>
