@@ -25,6 +25,19 @@
         top: 50%;
         transform: translate(-50%, -50%);
     }
+
+    /*nav icon animation*/
+.e-n-menu-icon svg {
+    transition: all 0.3s ease-in-out;
+}
+
+.e-n-menu-item:nth-child(1):hover .e-n-menu-icon svg {
+    transform: scale(1.3);
+}
+
+.e-n-menu-item:nth-child(2):hover .e-n-menu-icon svg {
+    transform: rotate(-90deg);
+}
 </style>
 
 <script>
