@@ -455,7 +455,10 @@
             }
 
             // hide SSO buttons
-            document.getElementById("sso-buttons")?.style.display = "none";
+            const ssoButtons = document.getElementById("sso-buttons");
+            if (ssoButtons) {
+                ssoButtons.style.display = "none";
+            }
         } else {
             clearSession(); // session expired
         }
