@@ -22,31 +22,6 @@
         transform: translateX(20px);
     }
 
-    /* Hide default submenu for PAGES only */
-    @media (min-width: 1025px) {
-
-        .menu-item-1750,
-        .menu-item-2765,
-        .menu-item-2766,
-        .menu-item-2767 {
-            display: none !important;
-        }
-    }
-
-    /* Nav submenu hover*/
-    .sub-menu.elementor-nav-menu--dropdown li {
-        padding-right: 10px !important;
-    }
-
-    .sub-menu.elementor-nav-menu--dropdown li a {
-        transition: transform 0.4s ease !important;
-    }
-
-    .sub-menu.elementor-nav-menu--dropdown li a:hover {
-        transition: transform 0.4s ease !important;
-        transform: translateX(10px) !important;
-    }
-
     /*nav submenu child*/
     .sub-menu.elementor-nav-menu--dropdown li:first-child {
         padding-top: 10px !important;
@@ -60,22 +35,48 @@
         padding-right: 10px !important;
     }
 
+
+    .sub-menu.elementor-nav-menu--dropdown li a {
+        transition: transform 0.4s ease !important;
+    }
+
+    .sub-menu.elementor-nav-menu--dropdown li a:hover {
+        transition: transform 0.4s ease !important;
+        transform: translateX(10px) !important;
+    }
+
+    /* Hide default submenu for PAGES only */
+    @media (min-width: 1025px) {
+
+        .menu-item-1750,
+        .menu-item-2765,
+        .menu-item-2766,
+        .menu-item-2767 {
+            display: none !important;
+        }
+    }
+
+    /*mobile offcanvas_menu*/
     @media(max-width: 1024px) {
         .elementor-nav-menu ul {
             position: static !important;
-            /*border-bottom: 1px solid #3f444b;*/
         }
 
         .elementor-nav-menu a {
             border-bottom: 1px solid #777777a6;
-            transition: transform 0.6s ease;
         }
 
-        .elementor-nav-menu a:hover {
-            /*border-bottom: 1px solid #777777a6;*/
-            transition: transform 0.6s ease;
-            transform: translateX(15px);
+        /*submenu hover*/
+        .sub-menu.elementor-nav-menu--dropdown li a {
+            border-bottom: none;
+            transition: transform 0.4s ease !important;
         }
+
+        .sub-menu.elementor-nav-menu--dropdown li a:hover {
+            transition: transform 0.4s ease !important;
+            transform: translateX(15px) !important;
+        }
+
 
         .elementor-1187 .elementor-element .elementor-item {
             display: flex;
@@ -161,7 +162,7 @@
     selector .head-menue-content {
         opacity: 0 !important;
         pointer-events: none !important;
-        z-index: 1000;
+        z-index: 10;
         transition: 0.3s;
 
     }
@@ -169,21 +170,9 @@
     selector:has(.menu-item-1308:hover, .head-menue-content:hover) .head-menue-content {
         opacity: 1 !important;
         pointer-events: all !important;
-        top: 90px;
-    }
-
-
-    .sub-menu.elementor-nav-menu--dropdown li a {
-        border-bottom: none;
-        transition: transform 0.4s ease !important;
-    }
-
-    .sub-menu.elementor-nav-menu--dropdown li a:hover {
-        transition: transform 0.4s ease !important;
-        transform: translateX(15px) !important;
+        top: 65px;
     }
 </style>
-
 <script>
     // scroll header color change
     document.addEventListener("DOMContentLoaded", function () {
@@ -233,7 +222,7 @@
                 item.style.transition = 'none';
                 item.style.transitionDelay = '0ms';
                 item.style.opacity = '0';
-                item.style.transform = 'scale(0.4) translateY(40px) translateX(30px)';
+                item.style.transform = 'scale(0.4) translateY(40px) translateX(20px)';
                 item.style.transformOrigin = 'center center';
                 void item.offsetWidth;
             });
@@ -242,8 +231,8 @@
         // Animate menu items
         const animateMenu = () => {
             allItems.forEach((item, index) => {
-                item.style.transition = 'opacity 0.7s ease-out, transform 0.7s cubic-bezier(0.23, 1, 0.32, 1)';
-                item.style.transitionDelay = `${index * 50}ms`;
+                item.style.transition = 'opacity 0.9s ease-out, transform 0.9s cubic-bezier(0.23, 1, 0.32, 1)';
+                item.style.transitionDelay = `${index * 30}ms`;
                 item.style.opacity = '1';
                 item.style.transform = 'scale(1) translateY(0) translateX(0)';
             });
