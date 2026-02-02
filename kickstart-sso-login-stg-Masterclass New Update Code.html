@@ -359,7 +359,9 @@
     // socaial login intigration
     /* ---------- Config ---------- */
     const BASE_URL = "https://qa-ik-auth-service.interviewkickstart.com";
-    const LOGIN_EXPIRY_DAYS = 90; // refresh token valid for 90 days
+    const LOGIN_EXPIRY_DAYS = 90;
+    const crossSubDomain = ".wpcomstaging.com";
+    const sameSite = "none";
 
     /* ---------- Session helpers ---------- */
     const setLoginSession = (user) => {
@@ -428,8 +430,8 @@
             // document.cookie = `refresh_token=${refreshToken}; max-age=${60 * 60 * 24 * LOGIN_EXPIRY_DAYS}; path=/; secure; samesite=lax`;
             // document.cookie = `access_token=${accessToken}; max-age=900; path=/; secure; samesite=lax`;
             // store tokens in cookies
-            document.cookie = `refresh_token=${refreshToken}; max-age=${60 * 60 * 24 * LOGIN_EXPIRY_DAYS}; domain=.wpcomstaging.com; path=/;  secure; samesite=none`;
-            document.cookie = `access_token=${accessToken}; max-age=900; domain=.wpcomstaging.com; path=/;  secure; samesite=none`;
+            document.cookie = `refresh_token=${refreshToken}; max-age=${60 * 60 * 24 * LOGIN_EXPIRY_DAYS}; domain=${crossSubDomain}; path=/;  secure; samesite=${sameSite}`;
+            document.cookie = `access_token=${accessToken}; max-age=900; domain=${crossSubDomain}; path=/;  secure; samesite=${sameSite}`;
 
             // store session + user info
             setLoginSession({ name, email });
@@ -476,9 +478,9 @@
 
     //second step data ///////////////////////////////////////////////////////////////////////////////////
 
-    function setCookie(name, value, LOGIN_EXPIRY_DAYS) {
-        const maxAge = LOGIN_EXPIRY_DAYS * 24 * 60 * 60;
-        document.cookie = `${name}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/; domain=.wpcomstaging.com; secure; samesite=none`;
+    function setCookie(name, value, days) {
+        const maxAge = days * 24 * 60 * 60;
+        document.cookie = `${name}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/; domain=${crossSubDomain}; secure; samesite=${sameSite}`;
     }
 
     function getCookie(name) {
@@ -516,7 +518,7 @@
         const welcome = document.createElement("div");
         welcome.className = "welcome_back";
         welcome.innerHTML = `
-    <h3>Welcome back, ${user.name} 👋</h3>
+    <h3>Welcome back, ${user.name} </h3>
     <button class="fr_btn auto_submit_btn">
       Reserve Your Free Spot Now
     </button>
