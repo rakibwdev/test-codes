@@ -414,6 +414,35 @@
         }
     };
 
+    //social login integration end
+
+    //second step data ///////////////////////////////////////////////////////////////////////////////////
+
+    function setCookie(name, value, days) {
+        const maxAge = days * 24 * 60 * 60;
+        document.cookie = `${name}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/; domain=${crossSubDomain}; secure; samesite=${sameSite}`;
+    }
+
+    function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? decodeURIComponent(match[2]) : null;
+    }
+
+    document.querySelector(".step_2_btn")?.addEventListener("click", () => {
+
+        const data = {
+            name: document.getElementById("Full-Name-Masterclass")?.value || "",
+            email: document.getElementById("Email-Address-Masterclass")?.value || "",
+            phone: document.getElementById("webinar_pnumber-Masterclass")?.value || "",
+            experience: document.getElementById("gql_experience-Masterclass")?.value || "",
+            domain: document.getElementById("gql_domain_role-Masterclass")?.value || "",
+            goal: document.getElementById("gql_goal_fit-Masterclass")?.value || "",
+            interview: document.getElementById("gql_int_select-Masterclass")?.value || ""
+        };
+
+        setCookie("mc_user_data", JSON.stringify(data), LOGIN_EXPIRY_DAYS);
+    });
+
     /* ---------- On page load ---------- */
     document.addEventListener("DOMContentLoaded", () => {
         // --- Parse URL hash after redirect from SSO ---
@@ -426,9 +455,6 @@
         const email = hash.get("email") || "";
 
         if (accessToken && refreshToken) {
-            // store tokens in cookies with secure and samesite attributes
-            // document.cookie = `refresh_token=${refreshToken}; max-age=${60 * 60 * 24 * LOGIN_EXPIRY_DAYS}; path=/; secure; samesite=lax`;
-            // document.cookie = `access_token=${accessToken}; max-age=900; path=/; secure; samesite=lax`;
             // store tokens in cookies
             document.cookie = `refresh_token=${refreshToken}; max-age=${60 * 60 * 24 * LOGIN_EXPIRY_DAYS}; domain=${crossSubDomain}; path=/;  secure; samesite=${sameSite}`;
             document.cookie = `access_token=${accessToken}; max-age=900; domain=${crossSubDomain}; path=/;  secure; samesite=${sameSite}`;
@@ -467,44 +493,6 @@
             clearSession(); // session expired
         }
 
-    });
-
-    /* ---------- SSO button click events ---------- */
-    document.querySelector(".google_btn")?.addEventListener("click", () => initiateSSO("google"));
-    document.querySelector(".meta_btn")?.addEventListener("click", () => initiateSSO("meta"));
-    document.querySelector(".linkedin_btn")?.addEventListener("click", () => initiateSSO("linkedin"));
-
-    //social login integration end
-
-    //second step data ///////////////////////////////////////////////////////////////////////////////////
-
-    function setCookie(name, value, days) {
-        const maxAge = days * 24 * 60 * 60;
-        document.cookie = `${name}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/; domain=${crossSubDomain}; secure; samesite=${sameSite}`;
-    }
-
-    function getCookie(name) {
-        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
-        return match ? decodeURIComponent(match[2]) : null;
-    }
-
-    document.querySelector(".step_2_btn")?.addEventListener("click", () => {
-
-        const data = {
-            name: document.getElementById("Full-Name-Masterclass")?.value || "",
-            email: document.getElementById("Email-Address-Masterclass")?.value || "",
-            phone: document.getElementById("webinar_pnumber-Masterclass")?.value || "",
-            experience: document.getElementById("gql_experience-Masterclass")?.value || "",
-            domain: document.getElementById("gql_domain_role-Masterclass")?.value || "",
-            goal: document.getElementById("gql_goal_fit-Masterclass")?.value || "",
-            interview: document.getElementById("gql_int_select-Masterclass")?.value || ""
-        };
-
-        setCookie("mc_user_data", JSON.stringify(data), LOGIN_EXPIRY_DAYS);
-    });
-
-    document.addEventListener("DOMContentLoaded", () => {
-
         const cookieData = getCookie("mc_user_data");
         if (!cookieData) return;
 
@@ -528,14 +516,26 @@
 
     });
 
+    let autoSubmitted = false;
     document.addEventListener("click", e => {
 
-        if (!e.target.closest(".auto_submit_btn")) return;
+        if (e.target.closest(".google_btn")) initiateSSO("google");
+        if (e.target.closest(".meta_btn")) initiateSSO("meta");
+        if (e.target.closest(".linkedin_btn")) initiateSSO("linkedin");
+
+        if (!e.target.closest(".auto_submit_btn") || autoSubmitted) return;
 
         const cookieData = getCookie("mc_user_data");
         if (!cookieData) return;
 
-        const user = JSON.parse(cookieData);
+        let user = null;
+        try {
+            user = JSON.parse(cookieData);
+        } catch {
+            console.warn("Invalid mc_user_data cookie");
+            return;
+        }
+
 
         // Auto-fill stage 1
         document.getElementById("Full-Name-Masterclass").value = user.name;
@@ -553,6 +553,7 @@
         document.querySelector(".fr_stage_2").style.display = "block";
 
         // Trigger submit (adjust if you use custom submit)
+        autoSubmitted = true;
         document.querySelector(".step_2_btn")?.click();
     });
 
