@@ -354,7 +354,7 @@
         }
     })
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////rakib////////////////////////////////////////////////////////////////////////////
 
     // socaial login intigration
     /* ---------- Config ---------- */
@@ -414,14 +414,13 @@
 
     /* ---------- On page load ---------- */
     document.addEventListener("DOMContentLoaded", () => {
-
         // --- Parse URL hash after redirect from SSO ---
         const hash = new URLSearchParams(window.location.hash.substring(1));
 
         const accessToken = hash.get("access_token");
         const refreshToken = hash.get("refresh_token");
 
-        const name = hash.get("name") || "";
+        const name = hash.get("full_name") || "";
         const email = hash.get("email") || "";
 
         if (accessToken && refreshToken) {
@@ -429,8 +428,8 @@
             // document.cookie = `refresh_token=${refreshToken}; max-age=${60 * 60 * 24 * LOGIN_EXPIRY_DAYS}; path=/; secure; samesite=lax`;
             // document.cookie = `access_token=${accessToken}; max-age=900; path=/; secure; samesite=lax`;
             // store tokens in cookies
-            document.cookie = `refresh_token=${refreshToken}; max-age=${60 * 60 * 24 * LOGIN_EXPIRY_DAYS}; path=/; domain=.wpcomstaging.com; secure; samesite=none`;
-            document.cookie = `access_token=${accessToken}; max-age=900; path=/; domain=.wpcomstaging.com; secure; samesite=none`;
+            document.cookie = `refresh_token=${refreshToken}; max-age=${60 * 60 * 24 * LOGIN_EXPIRY_DAYS}; domain=.wpcomstaging.com; path=/;  secure; samesite=none`;
+            document.cookie = `access_token=${accessToken}; max-age=900; domain=.wpcomstaging.com; path=/;  secure; samesite=none`;
 
             // store session + user info
             setLoginSession({ name, email });
@@ -474,4 +473,86 @@
     document.querySelector(".linkedin_btn")?.addEventListener("click", () => initiateSSO("linkedin"));
 
     //social login integration end
+
+    //second step data ///////////////////////////////////////////////////////////////////////////////////
+
+    function setCookie(name, value, LOGIN_EXPIRY_DAYS) {
+        const maxAge = LOGIN_EXPIRY_DAYS * 24 * 60 * 60;
+        document.cookie = `${name}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/; domain=.wpcomstaging.com; secure; samesite=none`;
+    }
+
+    function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+        return match ? decodeURIComponent(match[2]) : null;
+    }
+
+    document.querySelector(".step_2_btn")?.addEventListener("click", () => {
+
+        const data = {
+            name: document.getElementById("Full-Name-Masterclass")?.value || "",
+            email: document.getElementById("Email-Address-Masterclass")?.value || "",
+            phone: document.getElementById("webinar_pnumber-Masterclass")?.value || "",
+            experience: document.getElementById("gql_experience-Masterclass")?.value || "",
+            domain: document.getElementById("gql_domain_role-Masterclass")?.value || "",
+            goal: document.getElementById("gql_goal_fit-Masterclass")?.value || "",
+            interview: document.getElementById("gql_int_select-Masterclass")?.value || ""
+        };
+
+        setCookie("mc_user_data", JSON.stringify(data), LOGIN_EXPIRY_DAYS);
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+        const cookieData = getCookie("mc_user_data");
+        if (!cookieData) return;
+
+        const user = JSON.parse(cookieData);
+
+        // Hide both forms
+        document.querySelector(".fr_stage_1")?.style.display = "none";
+        document.querySelector(".fr_stage_2")?.style.display = "none";
+
+        // Create welcome UI
+        const welcome = document.createElement("div");
+        welcome.className = "welcome_back";
+        welcome.innerHTML = `
+    <h3>Welcome back, ${user.name} 👋</h3>
+    <button class="fr_btn auto_submit_btn">
+      Reserve Your Free Spot Now
+    </button>
+  `;
+
+        document.querySelector(".form_steps")?.prepend(welcome);
+
+    });
+
+    document.addEventListener("click", e => {
+
+        if (!e.target.closest(".auto_submit_btn")) return;
+
+        const cookieData = getCookie("mc_user_data");
+        if (!cookieData) return;
+
+        const user = JSON.parse(cookieData);
+
+        // Auto-fill stage 1
+        document.getElementById("Full-Name-Masterclass").value = user.name;
+        document.getElementById("Email-Address-Masterclass").value = user.email;
+
+        // Auto-fill stage 2
+        document.getElementById("webinar_pnumber-Masterclass").value = user.phone;
+        document.getElementById("gql_experience-Masterclass").value = user.experience;
+        document.getElementById("gql_domain_role-Masterclass").value = user.domain;
+        document.getElementById("gql_goal_fit-Masterclass").value = user.goal;
+        document.getElementById("gql_int_select-Masterclass").value = user.interview;
+
+        // Show forms (if required by submit logic)
+        document.querySelector(".fr_stage_1").style.display = "block";
+        document.querySelector(".fr_stage_2").style.display = "block";
+
+        // Trigger submit (adjust if you use custom submit)
+        document.querySelector(".step_2_btn")?.click();
+    });
+
+
 </script>
