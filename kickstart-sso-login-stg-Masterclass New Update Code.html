@@ -508,8 +508,17 @@
 
 
         // Hide both forms
-        document.querySelector(".fr_stage_1")?.style.display = "none";
-        document.querySelector(".fr_stage_2")?.style.display = "none";
+        const hideFormsInterval = setInterval(() => {
+            const form1 = document.querySelector(".fr_stage_1");
+            const form2 = document.querySelector(".fr_stage_2");
+
+            if (form1 && form2) {
+                form1.style.display = "none";
+                form2.style.display = "none";
+                clearInterval(hideFormsInterval);
+            }
+        }, 100);
+
 
         // Create welcome UI
         const welcome = document.createElement("div");
