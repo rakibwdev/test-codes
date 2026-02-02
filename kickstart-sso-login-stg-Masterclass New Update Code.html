@@ -433,13 +433,13 @@
     getFormContainer?.querySelector(".step_2_btn")?.addEventListener("click", () => {
 
         const data = {
-            name: getFormContainer?.getElementById("Full-Name-Masterclass")?.value || "",
-            email: getFormContainer?.getElementById("Email-Address-Masterclass")?.value || "",
-            phone: getFormContainer?.getElementById("webinar_pnumber-Masterclass")?.value || "",
-            experience: getFormContainer?.getElementById("gql_experience-Masterclass")?.value || "",
-            domain: getFormContainer?.getElementById("gql_domain_role-Masterclass")?.value || "",
-            goal: getFormContainer?.getElementById("gql_goal_fit-Masterclass")?.value || "",
-            interview: getFormContainer?.getElementById("gql_int_select-Masterclass")?.value || ""
+            name: getFormContainer?.querySelector("#Full-Name-Masterclass")?.value || "",
+            email: getFormContainer?.querySelector("#Email-Address-Masterclass")?.value || "",
+            phone: getFormContainer?.querySelector("#webinar_pnumber-Masterclass")?.value || "",
+            experience: getFormContainer?.querySelector("#gql_experience-Masterclass")?.value || "",
+            domain: getFormContainer?.querySelector("#gql_domain_role-Masterclass")?.value || "",
+            goal: getFormContainer?.querySelector("#gql_goal_fit-Masterclass")?.value || "",
+            interview: getFormContainer?.querySelector("#gql_int_select-Masterclass")?.value || ""
         };
 
         setCookie("mc_user_data", JSON.stringify(data), LOGIN_EXPIRY_DAYS);
@@ -476,8 +476,8 @@
             const storedName = getCookie("sso_name");
             const storedEmail = getCookie("sso_email");
 
-            const nameInput = getFormContainer?.getElementById("Full-Name-Masterclass");
-            const emailInput = getFormContainer?.getElementById("Email-Address-Masterclass");
+            const nameInput = getFormContainer?.querySelector("#Full-Name-Masterclass");
+            const emailInput = getFormContainer?.querySelector("#Email-Address-Masterclass");
 
             if (storedName && nameInput) {
                 nameInput.value = storedName;
@@ -490,7 +490,7 @@
             }
 
             // hide SSO buttons
-            const ssoButtons = document.getElementById("sso-buttons");
+            const ssoButtons = getFormContainer?.querySelector("#sso-buttons");
             if (ssoButtons) {
                 ssoButtons.style.display = "none";
             }
@@ -549,19 +549,29 @@
         if (!e.target.closest(".step_2_btn") || autoSubmitted) return;
         if (!user) return;
 
-        // Auto-fill stage 1
-        getFormContainer?.getElementById("Full-Name-Masterclass").value = user.name;
-        getFormContainer?.getElementById("Email-Address-Masterclass").value = user.email;
+        // Auto-fill stage
+        const fillInput = (selector, value) => {
+            const el = getFormContainer?.querySelector(selector);
+            if (el && value !== undefined) {
+                el.value = value;
+                el.dispatchEvent(new Event("input", { bubbles: true }));
+            }
+        };
 
-        // Auto-fill stage 2
-        getFormContainer?.getElementById("webinar_pnumber-Masterclass").value = user.phone;
-        getFormContainer?.getElementById("gql_experience-Masterclass").value = user.experience;
-        getFormContainer?.getElementById("gql_domain_role-Masterclass").value = user.domain;
-        getFormContainer?.getElementById("gql_goal_fit-Masterclass").value = user.goal;
-        getFormContainer?.getElementById("gql_int_select-Masterclass").value = user.interview;
-        // Show forms (if required by submit logic)
-        getFormContainer?.querySelector(".fr_stage_1").style.display = "block";
-        getFormContainer?.querySelector(".fr_stage_2").style.display = "block";
+        fillInput("#Full-Name-Masterclass", user.name);
+        fillInput("#Email-Address-Masterclass", user.email);
+        fillInput("#webinar_pnumber-Masterclass", user.phone);
+        fillInput("#gql_experience-Masterclass", user.experience);
+        fillInput("#gql_domain_role-Masterclass", user.domain);
+        fillInput("#gql_goal_fit-Masterclass", user.goal);
+        fillInput("#gql_int_select-Masterclass", user.interview);
+
+        const stage1 = getFormContainer?.querySelector(".fr_stage_1");
+        const stage2 = getFormContainer?.querySelector(".fr_stage_2");
+
+        if (stage1) stage1.style.display = "block";
+        if (stage2) stage2.style.display = "block";
+
 
         // Trigger submit (adjust if you use custom submit)
         autoSubmitted = true;
