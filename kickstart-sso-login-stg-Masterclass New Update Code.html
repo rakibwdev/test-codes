@@ -366,7 +366,7 @@
 
     function setCookie(name, value, days) {
         const maxAge = days * 24 * 60 * 60;
-        document.cookie = `${name}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/; domain=${crossSubDomain}; secure; samesite=${sameSite}`;
+        document.cookie = `${name}=${value}; max-age=${maxAge}; path=/; domain=${crossSubDomain}; secure; samesite=${sameSite}`;
     }
 
     function getCookie(name) {
@@ -383,8 +383,8 @@
         const expiry = Date.now() + LOGIN_EXPIRY_DAYS * 24 * 60 * 60 * 1000;
         setCookie("sso_logged_in", "true", LOGIN_EXPIRY_DAYS);
         setCookie("sso_expiry", expiry, LOGIN_EXPIRY_DAYS);
-        setCookie("sso_name", encodeURIComponent(user.name || ""), LOGIN_EXPIRY_DAYS);
-        setCookie("sso_email", encodeURIComponent(user.email || ""), LOGIN_EXPIRY_DAYS);
+        setCookie("sso_name", user.name || "", LOGIN_EXPIRY_DAYS);
+        setCookie("sso_email", user.email || "", LOGIN_EXPIRY_DAYS);
     };
 
     const isSessionValid = () => {
@@ -399,6 +399,16 @@
         deleteCookie("sso_name");
         deleteCookie("sso_email");
     };
+
+    function goToStep2() {
+        const step1 = getFormContainer.querySelector(".fr_stage_1");
+        const step2 = getFormContainer.querySelector(".fr_stage_2");
+
+        if (step1 && step2) {
+            step1.style.display = "none";
+            step2.style.display = "block";
+        }
+    }
 
     /* ---------- Initiate SSO ---------- */
     const initiateSSO = async (provider) => {
@@ -480,7 +490,7 @@
             const emailInput = getFormContainer?.querySelector("#Email-Address-Masterclass");
 
             if (storedName && nameInput) {
-                nameInput.value = storedName;
+                nameInput.value = storedName.replace(/[._-]/g, "");
                 nameInput.dispatchEvent(new Event("input", { bubbles: true }));
             }
 
@@ -543,27 +553,37 @@
 
         if (!e.target.closest(".step_2_btn") || autoSubmitted) return;
         if (!user) return;
+        autoSubmitted = true;
 
         // Auto-fill stage
-        const fillInput = (selector, value) => {
-            const el = getFormContainer?.querySelector(selector);
-            if (el && value !== undefined) {
-                el.value = value;
-                el.dispatchEvent(new Event("input", { bubbles: true }));
-            }
-        };
 
-        fillInput("#Full-Name-Masterclass", user.name);
-        fillInput("#Email-Address-Masterclass", user.email);
-        fillInput("#webinar_pnumber-Masterclass", user.phone);
-        fillInput("#gql_experience-Masterclass", user.experience);
-        fillInput("#gql_domain_role-Masterclass", user.domain);
-        fillInput("#gql_goal_fit-Masterclass", user.goal);
-        fillInput("#gql_int_select-Masterclass", user.interview);
+        const waitForStep2 = setInterval(() => {
+            const step2 = getFormContainer?.querySelector("#gql_experience-Masterclass");
 
-        // Trigger submit (adjust if you use custom submit)
-        autoSubmitted = true;
-        getFormContainer?.querySelector(".step_2_btn")?.click();
+            if (!step2) return;
+
+            clearInterval(waitForStep2);
+            const fillInput = (selector, value) => {
+                const el = getFormContainer?.querySelector(selector);
+                if (el && value !== undefined) {
+                    el.value = value;
+                    el.dispatchEvent(new Event("input", { bubbles: true }));
+                }
+            };
+
+            fillInput("#Full-Name-Masterclass", user.name);
+            fillInput("#Email-Address-Masterclass", user.email);
+            fillInput("#webinar_pnumber-Masterclass", user.phone);
+            fillInput("#gql_experience-Masterclass", user.experience);
+            fillInput("#gql_domain_role-Masterclass", user.domain);
+            fillInput("#gql_goal_fit-Masterclass", user.goal);
+            fillInput("#gql_int_select-Masterclass", user.interview);
+
+            // Trigger submit (adjust if you use custom submit)
+            getFormContainer?.querySelector(".step_2_btn")?.click();
+
+        }, 100);
     });
+
 
 </script>
