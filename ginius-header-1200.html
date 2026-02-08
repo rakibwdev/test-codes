@@ -212,97 +212,44 @@
     /*}*/
 
 
+
+
     /*mobile offcanvas animation*/
 
-    /*overlay image*/
-    .elementor-widget-off-canvas .e-off-canvas__overlay {
-        opacity: 0;
-        /* hidden initially */
-        transform: translateY(-10%) scale(.9);
-        /* up + slight zoom out */
-        margin: 5px;
-        border-radius: 5px;
-        pointer-events: none;
-        transition:
-            opacity 0.5s ease-in-out,
-            transform 0.6s ease-in-out;
+
+    body #off-canvas-0c02358.e-off-canvas {
+        visibility: visible !important;
+        opacity: 1 !important;
     }
 
-    /* Overlay visible when off-canvas is open */
-    .elementor-widget-off-canvas .e-off-canvas[aria-hidden="false"] .e-off-canvas__overlay {
-        opacity: 1;
-        margin: 5px;
-        border-radius: 5px;
-        transform: translateY(0) scale(1);
-        /* slide down + zoom in */
-        pointer-events: auto;
-    }
-
-    /*mob-offcanvas animation*/
     #off-canvas-0c02358 .e-off-canvas__content {
-        position: relative;
+        position: fixed;
+        top: 50px;
+        height: 10vh;
+        width: 100vw;
+        opacity: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
-
-        width: 100%;
-        max-height: 0;
-        min-height: 0;
-
-        padding: 0 var(--spacer_l, 20px);
-        margin: 0;
-
-        background: #ffffff00;
-        border-radius: 0;
-
+        background: #ffffff;
+        overflow-Y: auto;
         overscroll-behavior: contain;
-        opacity: 0;
-
-        box-sizing: border-box;
-        z-index: 0;
-        margin-top: 50px !important;
-
-        transition:
-            height 0.55s ease-out,
-            max-height 0.55s ease-out,
-            width 0.55s ease-out,
-            margin 0.55s ease-out,
-            padding 0.55s ease-out,
-            border-radius 0.55s ease-out,
-            background-color 0.55s ease-out,
-            opacity 0.35s ease-in,
-            transform 0.55s ease-in-out;
+        transition: all 0.6s cubic-bezier(0.25, 0.1, 0.1, 0.25);
     }
 
     #off-canvas-0c02358[aria-hidden="false"] .e-off-canvas__content {
-        width: calc(100vw - 2 * var(--spacer_xxs, 5px));
-        max-height: calc(100vh - 2 * var(--spacer_xxs, 10px));
-        min-height: calc(var(--nav_height, 80px) - 2.222rem);
-
-        margin: var(--spacer_xxs, 5px) var(--spacer_xxs, 5px) 0;
-        padding: 0 calc(var(--spacer_l, 5px) - 2 * var(--spacer_xxs, 5px));
-
-        border-radius: 0 0 calc(var(--border_radius) * 3) calc(var(--border_radius) * 3);
-
-        background-color: #ffffffb3;
-        display: block;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background: url(https://beaumont.b-cdn.net/images/menu-bg.jpg) center/cover no-repeat;
-        transition: opacity 0.3s ease;
-        opacity: 0.7;
-        overflow-y: auto;
-
-        overscroll-behavior: contain;
+        height: 100vh;
+        opacity: 1;
     }
+
+    /* ===============================
+   CONTENT FADE-IN ANIMATION
+================================ */
 
     #off-canvas-0c02358[aria-hidden="false"] .e-off-canvas__content>* {
         opacity: 0;
-        animation: beaumontContentFade 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
-        animation-delay: 0.25s;
+        animation: beaumontContentFade 0.7s cubic-bezier(0.15, 0.35, 0.68, 0.86) forwards;
+        animation-delay: 0.5s;
     }
 
     @keyframes beaumontContentFade {
@@ -317,34 +264,16 @@
         }
     }
 
+    /* ===============================
+   MOBILE MENU BUTTON STATES
+================================ */
+
     body:has(#off-canvas-0c02358[aria-hidden="false"]) .mob-menu-btn {
         display: none !important;
     }
 
     body:has(#off-canvas-0c02358[aria-hidden="false"]) .close-icon {
         display: block !important;
-    }
-
-    .mob-men {
-        background-color: transparent;
-        transition:
-            background-color 0.45s cubic-bezier(0.23, 1, 0.32, 1),
-            backdrop-filter 0.45s cubic-bezier(0.23, 1, 0.32, 1);
-    }
-
-    body:has(#off-canvas-0c02358[aria-hidden="false"]) .mob-men {
-        background: #ffffffb3 !important;
-        border-radius: 5px 5px 0px 0px;
-        width: calc(100vw - 2 * var(--spacer_xxs, 5px));
-        max-height: calc(100vh - 2 * var(--spacer_xxs, 10px));
-        min-height: calc(var(--nav_height, 80px) - 2.222rem);
-
-        margin: var(--spacer_xxs, 5px) var(--spacer_xxs, 5px) 0;
-        padding: 0 calc(var(--spacer_l, 5px) - 2 * var(--spacer_xxs, 5px));
-
-        border-radius: 0 0 calc(var(--border_radius) * 3) calc(var(--border_radius) * 3);
-        z-index: 2147483634 !important;
-
     }
 
     body:has(#off-canvas-0c02358[aria-hidden="true"]) .mob-menu-btn {
@@ -355,125 +284,19 @@
         display: none !important;
     }
 
-
-
     /* ===============================
-   BACKGROUND IMAGE ANIMATION
+   MOBILE MENU BAR
 ================================ */
 
-#off-canvas-0c02358 .e-off-canvas__content {
-    position: relative;
-    z-index: 2;
-}
+    .mob-men {
+        background: transparent;
+        transition: background-color 0.5s cubic-bezier(0.28, 0.44, 0.76, 0.95);
+    }
 
-/* background layer */
-#off-canvas-0c02358 .e-off-canvas__content::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-
-    background: url(https://beaumont.b-cdn.net/images/menu-bg.jpg)
-                center / cover no-repeat;
-
-    margin: 5px;
-    border-radius: 5px;
-
-    opacity: 0;
-    transform: translateY(-10%) scale(0.9);
-
-    transition:
-        opacity 0.5s ease,
-        transform 0.6s ease;
-
-    z-index: -1;
-    pointer-events: none;
-}
-
-/* animate when off-canvas opens */
-#off-canvas-0c02358[aria-hidden="false"] .e-off-canvas__content::before {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-}
-
-
-
-
-/* -----------------------------
-   BASE / HIDDEN STATE
------------------------------ */
-.elementor-element.elementor-element-2e0a24f::before {
-    opacity: 0.3; /* semi-hidden initially */
-    transform: translateY(-10%) scale(0.5); /* slide up + shrink */
-    
-    transition:
-        opacity 0.5s ease,
-        transform 0.6s ease;
-    
-    will-change: opacity, transform;
-}
-
-/* -----------------------------
-   VISIBLE STATE / ANIMATION
-   Triggered when parent has aria-hidden="false"
------------------------------ */
-#off-canvas-0c02358[aria-hidden="false"]
-.elementor-element.elementor-element-2e0a24f::before {
-    opacity: 1;          /* fade in */
-    transform: translateY(0) scale(1); /* slide to original position + scale up */
-}
-
-
-
-/* work for clsing//////////////////////////////////////////////////////// */
-.elementor-element.elementor-element-2e0a24f::before {
-    content: "";
-    opacity: 0;                  /* fully hidden */
-    transform: translateY(-10%) scale(0.5);  /* up + small */
-    
-    transition: opacity 0.5s ease, transform 0.6s ease;
-    will-change: opacity, transform;
-    z-index: -1;
-    pointer-events: none;
-}
-
-/* -----------------------------
-   VISIBLE STATE / IN ANIMATION
------------------------------ */
-#off-canvas-0c02358[aria-hidden="false"]
-.elementor-element.elementor-element-2e0a24f::before {
-    opacity: 0.3;
-    transform: translateY(0) scale(1);
-    /* Add a tiny transition delay to force browser to notice change */
-    transition-delay: 0.01s; 
-}
-
-
-
- 
-body #off-canvas-0c02358.e-off-canvas {
-    visibility: visible !important;
-    opacity: 1 !important;
-}
-#off-canvas-0c02358 .e-off-canvas__content {
-    position:fixed;
-    top: 50px ;
-    height: 10vh;
-    width: 100vw;
-    opacity: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: #ffffff;
-    overflow-Y: auto;
-    overscroll-behavior: contain;
-    transition: all 0.6s cubic-bezier(0.25, 0.1, 0.1, 0.25);
-}
-
-#off-canvas-0c02358[aria-hidden="false"] .e-off-canvas__content {
-    height: 100vh;
-    opacity:1 ;
-}
-
+    body:has(#off-canvas-0c02358[aria-hidden="false"]) .mob-men {
+        background: #fffffffc !important;
+        z-index: 2147483634 !important;
+    }
 </style>
 
 <script>
