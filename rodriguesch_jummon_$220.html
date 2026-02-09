@@ -1,0 +1,14 @@
+<script>
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+
+        // set all buttons to false
+        document.querySelectorAll('.tab-btn').forEach(b => {
+            b.setAttribute('show_status', 'false');
+        });
+
+        // set clicked button to true
+        btn.setAttribute('show_status', 'true');
+    });
+});
+</script>
