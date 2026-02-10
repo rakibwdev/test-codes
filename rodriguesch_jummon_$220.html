@@ -8,6 +8,12 @@
         /*transform: translateY(15px) scale(0.95);*/
     }
 
+    @media (max-width: 1024px) {
+        .tabs-wrapper :is(.box-1, .box-2, .box-3, .box-4, .box-5) {
+            position: relative;
+        }
+    }
+
     /* Show matching box + image */
     .tabs-wrapper:has(.tab-btn[show_status="true"].btn-1) :is(.box-1, .img-1),
     .tabs-wrapper:has(.tab-btn[show_status="true"].btn-2) :is(.box-2, .img-2),
