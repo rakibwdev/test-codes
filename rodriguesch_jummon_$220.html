@@ -4,8 +4,8 @@
         opacity: 0;
         pointer-events: none;
         position: absolute;
-        transition: opacity 0.5s ease, transform 0.6s ease;
-        transform: translateY(15px) scale(0.95);
+        /*transition: opacity 0.5s ease, transform 0.6s ease;*/
+        /*transform: translateY(15px) scale(0.95);*/
     }
 
     /* Show matching box + image */
@@ -16,8 +16,8 @@
     .tabs-wrapper:has(.tab-btn[show_status="true"].btn-5) :is(.box-5, .img-5) {
         opacity: 1;
         pointer-events: auto;
-        position: relative;
-        transform: translateY(0) scale(1);
+        /*position: relative;*/
+        /*transform: translateY(0) scale(1);*/
     }
 
     .tabs-wrapper:has(.btn-1[show_status="true"]) .circle-1,
@@ -26,6 +26,16 @@
     .tabs-wrapper:has(.btn-4[show_status="true"]) .circle-4,
     .tabs-wrapper:has(.btn-5[show_status="true"]) .circle-5 {
         opacity: 0;
+    }
+
+    .tabs-wrapper .tab-btn {
+        cursor: pointer;
+    }
+
+    .tabs-wrapper .elementor-icon-box-icon {
+        background-color: #2986fd;
+        padding: 20px;
+        border-radius: 10px;
     }
 </style>
 
